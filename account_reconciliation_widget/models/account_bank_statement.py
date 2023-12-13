@@ -195,6 +195,17 @@ class AccountBankStatementLine(models.Model):
             aml_dict["move_id"] = self.move_id.id
             aml_dict["partner_id"] = self.partner_id.id
             aml_dict["statement_line_id"] = self.id
+            account_id = aml_dict.get("account_id")
+            if account_id == self.partner_id.property_account_receivable_id.id:
+                if aml_dict["debit"] - aml_dict["credit"] > 0:
+                    aml_dict["name"] = _("Repayment")
+                else:
+                    aml_dict["name"] = _("Payment")
+            elif account_id == self.partner_id.property_account_payable_id.id:
+                if aml_dict["debit"] - aml_dict["credit"] >= 0:
+                    aml_dict["name"] = _("Payment")
+                else:
+                    aml_dict["name"] = _("Repayment")
             self._prepare_move_line_for_currency(aml_dict, date)
         # Adjust latest counterpart move debit/credit if currency amount is balanced
         # but company amount is not

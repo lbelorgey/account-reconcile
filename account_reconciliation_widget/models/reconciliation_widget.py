@@ -898,7 +898,7 @@ class AccountReconciliation(models.AbstractModel):
                 "name": line.name
                 and line.name != "/"
                 and line.move_id.name != line.name
-                and line.move_id.name + ": " + line.name
+                and line.name
                 or line.move_id.name,
                 "ref": line.move_id.ref or "",
                 # For reconciliation between statement transactions and already
