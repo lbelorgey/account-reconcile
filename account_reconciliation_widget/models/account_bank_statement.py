@@ -195,7 +195,7 @@ class AccountBankStatementLine(models.Model):
             aml_dict["move_id"] = self.move_id.id
             aml_dict["partner_id"] = self.partner_id.id
             aml_dict["statement_line_id"] = self.id
-            account_id = aml_dict.get("account_id")
+            account_id = aml_dict.get("account_id") or aml_dict.get("move_line").account_id.id
             if account_id == self.partner_id.property_account_receivable_id.id:
                 if aml_dict["debit"] - aml_dict["credit"] > 0:
                     aml_dict["name"] = _("Repayment")
